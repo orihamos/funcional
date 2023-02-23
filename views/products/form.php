@@ -4,9 +4,7 @@
     <table class='table'>
       <thead>
         <tr>
-          <th scope='col'>#<?php if (isset($id)) {
-              echo $id;
-            } ?></th>
+          <th scope='col'>Anexo</th>
           <th scope='col'>Tipo de pagamento</th>
           <th scope='col'>Data da venda</th>
           <th scope='col'>Número da nota</th>
@@ -66,9 +64,7 @@
     <h2>Produto</h2>
     <thead>
       <tr>
-        <th scope='col'>#<?php if (isset($id)) {
-                echo $id;
-              } ?></th>
+        <th scope='col'>Anexo</th>
         <th scope='col'>Nome</th>
         <th scope='col'>Preço</th>
         <th scope='col'>Quantidade</th>
@@ -102,7 +98,7 @@
               <div class='valid-feedback'>Valido.</div>
             </td>
             <td>
-              <input type='number' class='form-control' id='preco' name='preco[]' value="<?php echo $produto['preco']?>" required >
+              <input type='number' step="0.1" class='form-control' id='preco' name='preco[]' value="<?php echo $produto['preco']?>"  required >
               <div class='valid-feedback'>Valido.</div>
             </td>
             <td>

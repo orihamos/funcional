@@ -12,7 +12,7 @@ try {
 } catch (PDOException $e) {
     error_log("Error connecting to database: " . $e->getMessage(), 3, __DIR__ . '/error.log');
     echo "Erro ao conectar, por favor, tente mais tarde.";
-    exit();
+   
 }
 
 if (!$pdo) {
@@ -20,3 +20,5 @@ if (!$pdo) {
     echo "Erro ao conectar, por favor, tente mais tarde.";
     exit();
 }
+
+
