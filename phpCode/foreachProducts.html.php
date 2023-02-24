@@ -82,6 +82,7 @@ if ($search) {
                         <a href="update.php?id=<?php echo $venda['id'] ?>" class="btn btn-sm btn-outline-primary">Editar</a>
                         <form method="post" action="delete.php">
                             <input type="hidden" name="id" value="<?php echo $venda['id'] ?>">
+                        
                             <button type="submit" class="btn btn-sm btn-outline-danger">Deletar</button>
                         </form>
                     </td>
@@ -123,6 +124,7 @@ if ($search) {
                     <td class="title"><?php echo $venda['data_registro'] ?></td>
                 </tr>
                 <input type="hidden" name="id" value="<?php echo $produto['id'] ?>">
+                <input type="hidden" name="id_venda" value="<?php echo $produto['id_venda'] ?>">
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>

@@ -1,5 +1,5 @@
 <?php
-function generateRandomDirectoryName($n)
+function generateRandomDirectoryName($n): string
 {
     $characters =
         "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -32,7 +32,8 @@ function addSale(
     $anexo_vendaPath,
     $produtos,
     $errors = []
-) {
+): void
+{
 
     if (empty($errors)) {
         $id_venda = addVenda(
@@ -70,7 +71,7 @@ function addVenda(
     return $pdo->lastInsertId();
 }
 
-function addProdutos($pdo, $id_venda, $produtos)
+function addProdutos($pdo, $id_venda, $produtos): void
 {
     foreach ($produtos as $produto) {
         $statementProdutos = $pdo->prepare("INSERT INTO produtos (nome, preco, quantidade, anexo_produto, id_venda)
@@ -129,7 +130,8 @@ function updateVenda(
     $num_nota,
     $obs,
     $anexo_vendaPath
-) {
+): void
+{
     $statementVendas = $pdo->prepare(
         "UPDATE vendas SET tipo_pagamento = :tipo_pagamento, data_venda = :data_venda, num_nota = :num_nota, obs = :obs, anexo_venda = :anexo_venda, data_registro = :date WHERE id = :id"
     );

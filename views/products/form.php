@@ -31,7 +31,7 @@
           <?php endif; ?>
         </td>
         <td>
-          <select type="text" name="tipo_pagamento" id="tipo_pagamento" class="form-control form-select" required>
+          <select name="tipo_pagamento" id="tipo_pagamento" class="form-control form-select" required>
             <option disabled selected value> -- escolha uma opção -- </option>
             <?php include_once __DIR__ . "/../../phpCode/tipoPag.php" ?>
           </select>
@@ -106,6 +106,9 @@
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
+            <?php if (count($produtos) > 1) : ?>
+              <button type="submit" name="delete-product" value="<?=$produto['id']?>">Delete</button>
+            <?php endif; ?>
           </td>
         </tr>
       <?php endforeach; ?>
