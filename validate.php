@@ -1,17 +1,17 @@
 <?php
 require_once __DIR__ . "/functions.php";
 
-$tipo_pagamento = sanitize_input($_POST["tipo_pagamento"]);
-$data_venda = sanitize_input($_POST["data_venda"]);
-$num_nota = sanitize_input($_POST["num_nota"]);
-$obs = sanitize_input($_POST["obs"]);
+$tipo_pagamento = sanitizeInput($_POST["tipo_pagamento"]);
+$data_venda = sanitizeInput($_POST["data_venda"]);
+$num_nota = sanitizeInput($_POST["num_nota"]);
+$obs = sanitizeInput($_POST["obs"]);
 $anexo_venda = $_FILES["anexo_venda"] ?? null;
 $anexo_vendaPath = $venda["anexo_venda"];
 
 $produtos = [];
-$nomes = sanitize_input($_POST["nome"]);
-$precos = sanitize_input($_POST["preco"]);
-$quantidades = sanitize_input($_POST["quantidade"]);
+$nomes = sanitizeInput($_POST["nome"]);
+$precos = sanitizeInput($_POST["preco"]);
+$quantidades = sanitizeInput($_POST["quantidade"]);
 $anexo_produtos = $_FILES["anexo_produto"] ?? null;
 $anexo_produtoPath = "";
 
@@ -40,7 +40,7 @@ foreach ($nomes as $index => $nome) {
         }
 
         $anexo_produtoPath =
-            "images/" . randomString(8) . "/" . $anexo_produtos["name"][$index];
+            "images/" . generateRandomDirectoryName(8) . "/" . $anexo_produtos["name"][$index];
         mkdir(
             dirname(__DIR__ . "/public/products/" . $anexo_produtoPath),
             0777,
@@ -74,7 +74,7 @@ if ($anexo_venda && $anexo_venda["tmp_name"]) {
         unlink(__DIR__ . "/public/products/" . $venda["anexo_venda"]);
     }
 
-    $anexo_vendaPath = "images/" . randomString(8) . "/" . $anexo_venda["name"];
+    $anexo_vendaPath = "images/" . generateRandomDirectoryName(8) . "/" . $anexo_venda["name"];
     mkdir(dirname(__DIR__ . "/public/products/" . $anexo_vendaPath));
     move_uploaded_file($anexo_venda["tmp_name"], $anexo_vendaPath);
 }

@@ -1,6 +1,5 @@
 <?php
-// random string function for generating unique directories for images
-function randomString($n)
+function generateRandomDirectoryName($n)
 {
     $characters =
         "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -12,18 +11,13 @@ function randomString($n)
     return $str;
 }
 
-function sanitize_input($data) {
-    switch (gettype($data)) {
-        case 'array':
-            foreach ($data as $key => $value) {
-                $data[$key] = htmlspecialchars(stripslashes(trim($value)));
-            }
-            break;
-        case 'string':
-            $data = htmlspecialchars(stripslashes(trim($data)));
-            break;
-        default:
-            // Do nothing
+function sanitizeInput($data) {
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
+            $data[$key] = htmlspecialchars(stripslashes(trim($value)));
+        }
+    } else if (is_string($data)) {
+        $data = htmlspecialchars(stripslashes(trim($data)));
     }
     return $data;
 }
