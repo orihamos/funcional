@@ -10,7 +10,6 @@ $id_venda = $venda["id"];
 
     //delete product
 if (isset($_POST['delete-product'])) {
-
     $id = $_POST['delete-product'];
     $statement = $pdo->prepare('DELETE FROM produtos WHERE id = :id');
     $statement->bindValue(':id', $id);
