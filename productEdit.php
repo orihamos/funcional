@@ -5,19 +5,15 @@ if (!$id) {
     exit();
 }
 
-$venda = fetchVenda($pdo, $id);
+$venda = getSale($pdo, $id);
 $id_venda = $venda["id"];
 
-$tipo_pagamento = sanitize_input($venda["tipo_pagamento"]);
-$data_venda = sanitize_input($venda["data_venda"]);
-$num_nota = sanitize_input($venda["num_nota"]);
-$obs = sanitize_input($venda["obs"]);
+$tipo_pagamento = sanitizeInput($venda["tipo_pagamento"]);
+$data_venda = sanitizeInput($venda["data_venda"]);
+$num_nota = sanitizeInput($venda["num_nota"]);
+$obs = sanitizeInput($venda["obs"]);
 
-
-$statement = $pdo->prepare("SELECT * FROM produtos WHERE id_venda = :id_venda");
-$statement->bindValue(":id_venda", $id_venda);
-$statement->execute();
-$produtos = $statement->fetchAll(PDO::FETCH_ASSOC);
+$produtos = getProductsBySaleId($pdo, $id);
 
 foreach ($produtos as $index => $x) {
     $nome[$index] = $x["nome"];
@@ -26,22 +22,20 @@ foreach ($produtos as $index => $x) {
     $anexo_produto[$index] = $x["anexo_produto"];
     $id_produto[$index] = $x["id"];
 }
-/* exit; */
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require_once __DIR__ . "/validate.php";
 
     if (empty($errors)) {
-        $statement_vendas = $pdo->prepare(
-            "UPDATE vendas SET tipo_pagamento = :tipo_pagamento, data_venda = :data_venda, num_nota = :num_nota, obs = :obs, anexo_venda = :anexo_venda, data_registro = :date WHERE id = :id"
+
+        updateVenda(
+            $pdo,
+            $id,
+            $tipo_pagamento,
+            $data_venda,
+            $num_nota,
+            $obs,
+            $anexo_vendaPath
         );
-        $statement_vendas->bindValue(":tipo_pagamento", $tipo_pagamento);
-        $statement_vendas->bindValue(":data_venda", $data_venda);
-        $statement_vendas->bindValue(":num_nota", $num_nota);
-        $statement_vendas->bindValue(":obs", $obs);
-        $statement_vendas->bindValue(":anexo_venda", $anexo_vendaPath);
-        $statement_vendas->bindValue(":date", date("Y-m-d H:i:s"));
-        $statement_vendas->bindValue(":id", $id);
-        $statement_vendas->execute();
 
         $campos = ["nome", "quantidade", "preco", "id"];
         $produtos_editados = [];
@@ -63,8 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "UPDATE produtos SET nome = :nome, preco = :preco, quantidade = :quantidade, anexo_produto = :anexo_produto, id_venda = :id_venda WHERE id = :id"
             );
             $statement_produtos->bindValue(":nome", $produtos_editado["nome"]);
-            $statement_produtos->bindValue(":preco",$produtos_editado["preco"]);
-            $statement_produtos->bindValue(":quantidade",$produtos_editado["quantidade"]
+            $statement_produtos->bindValue(":preco", $produtos_editado["preco"]);
+            $statement_produtos->bindValue(
+                ":quantidade",
+                $produtos_editado["quantidade"]
             );
             $statement_produtos->bindValue(":anexo_produto", $xy[$index]);
             $statement_produtos->bindValue(":id_venda", $id_venda);
