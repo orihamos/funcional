@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../../config/config.php';
-//id from get
 $id = $_POST['id'] ?? null;
 
 if (!$id) {

@@ -5,15 +5,19 @@ if (!$id) {
     exit();
 }
 
-$venda = getSale($pdo, $id);
+$venda = getVenda($pdo, $id);
 $id_venda = $venda["id"];
 
-    //delete product
-if (isset($_POST['delete-product'])) {
-    $id = $_POST['delete-product'];
+    //delete Produto
+if (isset($_POST['delete-produto'])) {
+    $id = $_POST['delete-produto'];
     $statement = $pdo->prepare('DELETE FROM produtos WHERE id = :id');
     $statement->bindValue(':id', $id);
     $statement->execute();
+    header("Location: update.php?id=$id_venda");
+    exit();
+
+    
 }
 
 
@@ -22,7 +26,8 @@ $data_venda = sanitizeInput($venda["data_venda"]);
 $num_nota = sanitizeInput($venda["num_nota"]);
 $obs = sanitizeInput($venda["obs"]);
 
-$produtos = getProductsBySaleId($pdo, $id);
+$produtos = getProdutosByVendaId($pdo, $id);
+
 
 foreach ($produtos as $index => $value) {
     $nome[$index] = $value["nome"];
@@ -68,14 +73,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             );
             $statement_produtos->bindValue(":nome", $produtos_editado["nome"]);
             $statement_produtos->bindValue(":preco", $produtos_editado["preco"]);
-            $statement_produtos->bindValue(
-                ":quantidade",
-                $produtos_editado["quantidade"]
-            );
+            $statement_produtos->bindValue(":quantidade",$produtos_editado["quantidade"]);
             $statement_produtos->bindValue(":anexo_produto", $xy[$index]);
             $statement_produtos->bindValue(":id_venda", $id_venda);
             $statement_produtos->bindValue(":id", $produtos_editado["id"]);
-
             $statement_produtos->execute();
         }
         header("Location: index.php");

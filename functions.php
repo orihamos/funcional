@@ -1,4 +1,5 @@
 <?php
+
 function generateRandomDirectoryName($n): string
 {
     $characters =
@@ -23,31 +24,37 @@ function sanitizeInput($data)
     return $data;
 }
 
-function addSale(
-    $pdo,
-    $tipo_pagamento,
-    $data_venda,
-    $num_nota,
-    $obs,
-    $anexo_vendaPath,
-    $produtos,
-    $errors = []
-): void
-{
 
-    if (empty($errors)) {
-        $id_venda = addVenda(
-            $pdo,
-            $tipo_pagamento,
-            $data_venda,
-            $num_nota,
-            $obs,
-            $anexo_vendaPath
-        );
-        addProdutos($pdo, $id_venda, $produtos);
-        header("Location: index.php");
-    }
+function getVenda($pdo, $id)
+{
+    $statement = $pdo->prepare("SELECT * FROM vendas WHERE id = :id");
+    $statement->bindValue(":id", $id);
+    $statement->execute();
+    return $statement->fetch(PDO::FETCH_ASSOC);
 }
+
+function getVendas($pdo)
+{
+    $statement = $pdo->prepare("SELECT * FROM vendas");
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getProdutos($pdo)
+{
+    $statement = $pdo->prepare("SELECT * FROM produtos");
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getProdutosByVendaId($pdo, $id)
+{
+    $statement = $pdo->prepare("SELECT * FROM produtos WHERE id_venda = :id");
+    $statement->bindValue(":id", $id);
+    $statement->execute();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 function addVenda(
     $pdo,
@@ -71,7 +78,7 @@ function addVenda(
     return $pdo->lastInsertId();
 }
 
-function addProdutos($pdo, $id_venda, $produtos): void
+function addProdutos($pdo, $id_venda, $produtos)
 {
     foreach ($produtos as $produto) {
         $statementProdutos = $pdo->prepare("INSERT INTO produtos (nome, preco, quantidade, anexo_produto, id_venda)
@@ -80,47 +87,35 @@ function addProdutos($pdo, $id_venda, $produtos): void
         $statementProdutos->bindValue(":nome", $produto["nome"]);
         $statementProdutos->bindValue(":preco", $produto["preco"]);
         $statementProdutos->bindValue(":quantidade", $produto["quantidade"]);
-        $statementProdutos->bindValue(
-            ":anexo_produto",
-            $produto["anexo_produto"]
-        );
+        $statementProdutos->bindValue(":anexo_produto",$produto["anexo_produto"]);
         $statementProdutos->bindValue(":id_venda", $id_venda);
         $statementProdutos->execute();
     }
 }
 
-function getSale($pdo, $id)
-{
-    $statement = $pdo->prepare("SELECT * FROM vendas WHERE id = :id");
-    $statement->bindValue(":id", $id);
-    $statement->execute();
-    return $statement->fetch(PDO::FETCH_ASSOC);
+function addRegistro(
+    $pdo,
+    $tipo_pagamento,
+    $data_venda,
+    $num_nota,
+    $obs,
+    $anexo_vendaPath,
+    $produtos,
+    $errors = []
+) {
+    if (empty($errors)) {
+        $id_venda = addVenda(
+            $pdo,
+            $tipo_pagamento,
+            $data_venda,
+            $num_nota,
+            $obs,
+            $anexo_vendaPath
+        );
+        addProdutos($pdo, $id_venda, $produtos);
+        header("Location: index.php");
+    }
 }
-
-function getSales($pdo)
-{
-    $statement = $pdo->prepare("SELECT * FROM vendas");
-    $statement->execute();
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-
-function getProducts($pdo)
-{
-    $statement = $pdo->prepare("SELECT * FROM produtos");
-    $statement->execute();
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function getProductsBySaleId($pdo, $id)
-{
-    $statement = $pdo->prepare("SELECT * FROM produtos WHERE id_venda = :id");
-    $statement->bindValue(":id", $id);
-    $statement->execute();
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
 
 function updateVenda(
     $pdo,
@@ -130,11 +125,10 @@ function updateVenda(
     $num_nota,
     $obs,
     $anexo_vendaPath
-): void
-{
+) {
     $statementVendas = $pdo->prepare(
         "UPDATE vendas SET tipo_pagamento = :tipo_pagamento, data_venda = :data_venda, num_nota = :num_nota, obs = :obs, anexo_venda = :anexo_venda, data_registro = :date WHERE id = :id"
-    );
+);
 
     $statementVendas->bindValue(":id", $id);
     $statementVendas->bindValue(":tipo_pagamento", $tipo_pagamento);
@@ -147,16 +141,32 @@ function updateVenda(
 }
 
 
-/*
- function dd($data)
+function updateProdutos($pdo, $id_venda, $produtos)
 {
-    echo '<pre>';
+    foreach ($produtos as $produto) {
+        $statementProdutos = $pdo->prepare("UPDATE produtos SET nome = :nome, preco = :preco, quantidade = :quantidade, anexo_produto = :anexo_produto, id_venda = :id_venda WHERE id = :id");
+
+        $statementProdutos->bindValue(":id", $produto["id"]);
+        $statementProdutos->bindValue(":nome", $produto["nome"]);
+        $statementProdutos->bindValue(":preco", $produto["preco"]);
+        $statementProdutos->bindValue(":quantidade", $produto["quantidade"]);
+        $statementProdutos->bindValue(":anexo_produto",$produto["anexo_produto"]);
+        $statementProdutos->bindValue(":id_venda", $id_venda);
+        $statementProdutos->execute();
+    }
+}
+
+
+
+function dd($data)
+{
+    echo "<pre>";
     var_dump($data);
-    echo '</pre>';
+    echo "</pre>";
     die();
 }
- 
- function deleteSale($pdo, $id)
+/* 
+ function deleteVenda($pdo, $id)
 {
     $statement = $pdo->prepare("DELETE FROM vendas WHERE id = :id");
     $statement->bindValue(":id", $id);

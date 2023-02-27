@@ -16,7 +16,7 @@
       <tr>
         <td>
           <?php if ($venda['anexo_venda']) : ?>
-            <img src='<?php echo $venda['anexo_venda']; ?>' class='img-thumbnail image'>
+            <img src='<?= $venda['anexo_venda']; ?>' class='img-thumbnail image'>
             <div class='col-md-3'>
               <label for='anexo_venda' class='form-label'>Mudar anexo</label>
               <input type='file' id='anexo_venda' name='anexo_venda'>
@@ -38,15 +38,15 @@
           <div class='valid-feedback'>Valido.</div>
         </td>
         <td>
-          <input type='date' class='form-control' id='data_venda' name='data_venda' value='<?php echo $data_venda; ?>'>
+          <input type='date' class='form-control' id='data_venda' name='data_venda' value='<?= $data_venda; ?>'>
           <div class='valid-feedback'>Valido.</div>
         </td>
         <td>
-          <input type='number' class='form-control' id='num_nota' name='num_nota' value='<?php echo $num_nota; ?>' required>
+          <input type='number' class='form-control' id='num_nota' name='num_nota' value='<?= $num_nota; ?>' required>
           <div class='valid-feedback'>Valido.</div>
         </td>
         <td>
-          <input type='text' class='form-control' id='obs' name='obs' value='<?php echo $obs; ?>'>
+          <input type='text' class='form-control' id='obs' name='obs' value='<?= $obs; ?>'>
           <div class='valid-feedback'>Valido.</div>
         </td>
         <td>
@@ -67,19 +67,18 @@
         <th scope='col'>Nome</th>
         <th scope='col'>Preço</th>
         <th scope='col'>Quantidade</th>
-        <th scope='col'><?php echo $data_registro ?? 'Data Atual'; ?></th>
       </tr>
     </thead>
     <tbody id="formulario-produto">
       <?php foreach ($produtos as $index => $produto) : ?>
         <?php if (isset($produto['id'])) : ?>
-          <input type='hidden' name='id_venda[]' value="<?php echo $produto['id_venda'] ?>">
-          <input type='hidden' name='id[]' value="<?php echo $produto['id'] ?>">
+          <input type='hidden' name='id_venda[]' value="<?=$produto['id_venda'] ?>">
+          <input type='hidden' name='id[]' value="<?=$produto['id'] ?>">
         <?php endif; ?>
         <tr>
           <td>
             <?php if ($produto['anexo_produto']) : ?>
-              <img src='<?php echo $produto['anexo_produto']; ?>' class='img-thumbnail image'>
+              <img src='<?=$produto['anexo_produto']; ?>' class='img-thumbnail image'>
               <div class='col-md-3'>
                 <label for='anexo_produto'>Mudar anexo</label>
                 <input type='file' id='anexo_produto' name='anexo_produto[]'>
@@ -94,28 +93,31 @@
             <?php endif; ?>
           </td>
           <td>
-            <input type='text' class='form-control' name='nome[]' value="<?php echo $produto['nome'] ?>" required>
+            <input type='text' class='form-control' name='nome[]' value="<?=$produto['nome'] ?>" required>
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
-            <input type='number' step="0.1" class='form-control' id='preco' name='preco[]' value="<?php echo $produto['preco'] ?>" required>
+            <input type='number' step="0.1" class='form-control' id='preco' name='preco[]' value="<?=$produto['preco'] ?>" required>
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
-            <input type='number' class='form-control' id='quantidade' name="quantidade[]" value="<?php echo $produto['quantidade'] ?>" required>
+            <input type='number' class='form-control' id='quantidade' name="quantidade[]" value="<?=$produto['quantidade'] ?>" required>
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
             <?php if (count($produtos) > 1) : ?>
-              <button type="submit" name="delete-product" value="<?=$produto['id']?>">Delete</button>
+              <button type="submit" name="delete-produto" value="<?php echo  $produto['id'] ?? '' ?>">Delete</button>
             <?php endif; ?>
           </td>
         </tr>
       <?php endforeach; ?>
-    </tbody>
+      <button type="button" id="add-button" class="btn btn-primary">+</button>
+<!--       <button type="button" id="remove-button" class="btn btn-danger mx-1 remove-button">-</button>
+ -->    </tbody>
   </table>
-  <div class="container-fluid">
-    <button type="button" id="add-button" class="btn btn-primary">+</button>
-    <button type="submit" class="btn btn-primary">Salvar</button>
+  <div class="container-fluid  d-flex">
+    <div class="container-fluid  d-flex justify-content-end">
+      <button type="submit" class="btn btn-lg btn-primary ">Salvar</button>
+    </div>
   </div>
 </form>
