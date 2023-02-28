@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . "/functions.php";
 
-$tipo_pagamento = sanitizeInput($_POST["tipo_pagamento"]);
+
+$tipo_pagamento = isset($_POST['tipo_pagamento']) && $_POST['tipo_pagamento'] === 'Outro' ? $_POST['outro_tipo_pagamento'] : $_POST['tipo_pagamento'];
+$tipo_pagamento = sanitizeInput($tipo_pagamento);
 $data_venda = sanitizeInput($_POST["data_venda"]);
 $num_nota = sanitizeInput($_POST["num_nota"]);
 $obs = sanitizeInput($_POST["obs"]);

@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . '/../functions.php';
 require_once __DIR__ . '/searchQuery.html.php';
-
 ?>
-
 
 <div class="d-flex justify-content-between mt-5">
     <h2>Vendas</h2>
@@ -11,7 +9,7 @@ require_once __DIR__ . '/searchQuery.html.php';
         <a href="create.php" class="btn btn-success">Registrar</a>
     </p>
 </div>
-<table class="table table-hover ">
+<table class="table ">
     <thead>
         <tr>
             <th scope="col" class="title">Anexo</th>
@@ -30,13 +28,13 @@ require_once __DIR__ . '/searchQuery.html.php';
                 <td colspan="7">Nâo há nenhum registro cadastrado</td>
             </tr>
         <?php else : ?>
-            <?php foreach ($vendas as $i => $venda) : ?>
+            <?php foreach ($vendas as $venda) : ?>
                 <tr> 
                     <td> <?php 
                             if ($venda['anexo_venda']) : ?>
                             <img src="<?=$venda['anexo_venda'] ?>" class="img-thumbnail image" alt="anexo_venda">
                         <?php else : ?>
-                            <img src="https://via.placeholder.com/120" class="img-thumbnail imgage" alt="anexo_venda">
+                            <img src="https://via.placeholder.com/120" class="img-thumbnail image" alt="anexo_venda">
                         <?php endif; ?>
                     </td>
                     <td class="title"><?=$venda['tipo_pagamento'] ?></td>
@@ -65,27 +63,24 @@ require_once __DIR__ . '/searchQuery.html.php';
                 <th scope="col" class="title">Nome</th>
                 <th scope="col" class="title">Preço</th>
                 <th scope="col" class="title">Quantidade</th>
-                <th scope="col" class="title">Data de Registro</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            // if there's any
             if (empty($produtos)) : ?>
                 <tr>
-                    <td colspan="7">Nada</td>
+                    <td colspan="7">Nenhum produto registrado</td>
                 </tr>
             <?php else : ?>
                 <?php foreach ($produtos as $i => $produto) : ?>
                     <tr>
                         <td class="d-flex justify-content-start ">
                             <?php if (isset($produto['anexo_produto'])) : ?>
-                                <img src="<?=$produto['anexo_produto'] ?>" class="img-thumbnail image"> <?php else : ?> <img src="https://via.placeholder.com/120" class="img-thumbnail img" alt="anexo_produto"><?php endif; ?>
+                                <img src="<?=$produto['anexo_produto'] ?>" class="img-thumbnail image"> <?php else : ?> <img src="https://via.placeholder.com/120" class="img-thumbnail image" alt="anexo_produto"><?php endif; ?>
                         </td>
                         <td class="title"><?=$produto['nome'] ?></td>
                         <td class="title"><?=$produto['preco'] ?></td>
                         <td class="title"><?=$produto['quantidade'] ?></td>
-                        <td class="title"><?=$venda['data_registro'] ?></td>
                     </tr>
                     <input type="hidden" name="id" value="<?=$produto['id'] ?>">
                     <input type="hidden" name="id_venda" value="<?=$produto['id_venda'] ?>">

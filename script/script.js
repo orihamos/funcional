@@ -18,7 +18,7 @@
     );
   });
 })();
-
+$("#outro_tipo_pagamento").css("display", "none");
 $(document).ready(function () {
   $("#add-button").click(function () {
     var clone = $("#formulario-produto tr:first").clone();
@@ -26,5 +26,16 @@ $(document).ready(function () {
     $("#formulario-produto").append(clone);
   });
   
+  $("#tipo_pagamento").change(function() {
+    if ($(this).val() === "Outro") {
+        $("#outro_tipo_pagamento").show();
+    } else {
+        $("#outro_tipo_pagamento").hide();
+    }
+}).trigger('change');
+  
+
 });
+
+
 

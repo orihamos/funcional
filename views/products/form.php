@@ -31,11 +31,8 @@
           <?php endif; ?>
         </td>
         <td>
-          <select name="tipo_pagamento" id="tipo_pagamento" class="form-control form-select" required>
-            <option disabled selected value> -- escolha uma opção -- </option>
-            <?php include_once __DIR__ . "/../../phpCode/tipoPag.php" ?>
-          </select>
-          <div class='valid-feedback'>Valido.</div>
+            <?php require_once __DIR__ . '/../../phpCode/tipoPag.php'; ?>
+            <div class='valid-feedback'>Valido.</div>
         </td>
         <td>
           <input type='date' class='form-control' id='data_venda' name='data_venda' value='<?= $data_venda; ?>'>
@@ -93,15 +90,15 @@
             <?php endif; ?>
           </td>
           <td>
-            <input type='text' class='form-control' name='nome[]' value="<?=$produto['nome'] ?>" required>
+            <input type='text' class='form-control' name='nome[]' value="<?=$produto['nome'] ?>" >
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
-            <input type='number' step="0.1" class='form-control' id='preco' name='preco[]' value="<?=$produto['preco'] ?>" required>
+            <input type='number' step="0.1" class='form-control'  name='preco[]' value="<?=$produto['preco'] ?>" >
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
-            <input type='number' class='form-control' id='quantidade' name="quantidade[]" value="<?=$produto['quantidade'] ?>" required>
+            <input type='number' class='form-control'  name="quantidade[]" value="<?=$produto['quantidade'] ?>" >
             <div class='valid-feedback'>Valido.</div>
           </td>
           <td>
